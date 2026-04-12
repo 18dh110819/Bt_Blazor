@@ -1,0 +1,35 @@
+@page "/xe"
+<h1>Bai tap xe</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <img width="100%" src="@($"./products/{current.Name.ToLower()}-car.jpg")" alt="">
+        </div>
+        <div class="col-6 flex">
+            @foreach(var car in ds){
+                <button class="@car.BtnClass" @onclick="() => ChangeColor(car)">@car.Name</button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {   
+
+    CarVm current = new CarVm { Name = "Black", BtnClass = "btn btn-outline-danger"};
+
+    List<CarVm> ds = new List<CarVm>
+    {
+        new CarVm { Name = "Black", BtnClass = "btn btn-outline-danger"},
+        new CarVm { Name = "Red", BtnClass = "btn btn-outline-secondary"},
+        new CarVm { Name = "Silver", BtnClass = "btn btn-outline-secondary"},
+        new CarVm { Name = "Steel", BtnClass = "btn btn-outline-secondary"}
+    };
+
+    @* string color = "black"; *@
+
+    void ChangeColor(CarVm car)
+    {
+        current = car;
+    }
+}
