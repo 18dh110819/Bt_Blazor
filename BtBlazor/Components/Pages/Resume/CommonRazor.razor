@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Html
+
+<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+    <div style="width: 75%;">
+        <h3 class="mb-0">@Header</h3>
+        <div class="subheading mb-3">
+            @SubHeader
+        </div>
+        <p>
+            @((MarkupString)Description)
+        </p>
+    </div>
+    <div>
+        <span style="color: rgb(189, 93, 56);">@TimeLine</span>
+    </div>
+</div>
+
+
+@code{
+    [Parameter]
+    public string Header { get; set; }
+    [Parameter]
+    public string SubHeader {get;set;}
+    [Parameter]
+    public string Description{get;set;}
+    [Parameter]
+    public string TimeLine {get;set;}
+}

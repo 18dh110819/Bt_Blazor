@@ -1,0 +1,57 @@
+@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <div class="top-row ps-3 navbar navbar-dark top-0">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="">
+                    <img src="./products/red-car.jpg" width="150px" height="150px" class="rounded-circle img-profile"
+                         alt="image desc" />
+                </a>
+            </div>
+        </div>
+
+        <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+        <div class="nav-scrollable my-3 top-0" onclick="document.querySelector('.navbar-toggler').click()">
+            <nav class="nav flex-column">
+                <div class="nav-item px-3">
+                    <a class="nav-link text-uppercase fw-bold active" href="#about">
+                        About
+                    </a>
+                </div>
+                <div class="nav-item px-3">
+                    <a class="nav-link text-uppercase fw-bold" href="#experience">
+                        Experience
+                    </a>
+                </div>
+                <div class="nav-item px-3">
+                    <a class="nav-link text-uppercase fw-bold" href="#education">
+                        Education
+                    </a>
+                </div>
+                <div class="nav-item px-3">
+                    <a class="nav-link text-uppercase fw-bold" href="#skills">
+                        Skills
+                    </a>
+                </div>
+                <div class="nav-item px-3">
+                    <a class="nav-link text-uppercase fw-bold" href="#interests">
+                        Interests
+                    </a>
+                </div>
+                <div class="nav-item px-3">
+                    <a class="nav-link text-uppercase fw-bold" href="#awards">
+                        Awards
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <main>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
