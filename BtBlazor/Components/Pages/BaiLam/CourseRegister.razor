@@ -1,0 +1,99 @@
+@page "/register"
+
+<h1>Course Registration Form</h1>
+
+<EditForm Model="myModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+
+
+    <div class="mb-3">
+        <label>Full Name</label><br />
+        <InputText @bind-Value="myModel.FullName" class="form-control" />
+        <ValidationMessage For="@(() => myModel.FullName)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label><br />
+        <InputText @bind-Value="myModel.Email" class="form-control" />
+        <ValidationMessage For="@(() => myModel.Email)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Phone</label><br />
+        <InputText @bind-Value="myModel.PhoneNum" class="form-control" />
+        <ValidationMessage For="@(() => myModel.PhoneNum)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Chọn khóa học</label><br />
+        <InputSelect @bind-Value="myModel.Course" class="form-control">
+            <option value="">-- Select --</option>
+            @foreach (var c in Courses)
+            {
+                <option value="@c">@c</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => myModel.Course)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="studyMode">Study Mode</label>
+        <InputRadioGroup @bind-Value="myModel.StudyMode" class="form-control">
+            <div>
+                <InputRadio Value="@("Online")" id="online" />
+                <label for="online">Online</label>
+            </div>
+            <div>
+                <InputRadio Value="@("Offline")" id="offline" />
+                <label for="offline">Offline</label>
+            </div>
+        </InputRadioGroup>
+        <ValidationMessage For="@(() => myModel.StudyMode)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="">Preferred Start Date</label>
+        <InputDate @bind-Value="myModel.PrefStartDate" class="form-control" />
+        <ValidationMessage For="@(() => myModel.PrefStartDate)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Comment & note</label><br />
+        <InputTextArea @bind-Value="myModel.Comment" class="form-control" />
+        <ValidationMessage For="@(() => myModel.Comment)" />
+    </div>
+
+    <div class="mb-3">
+        <InputCheckbox @bind-Value="myModel.Term" />
+        <label class="form-check-label" for="term">I agree to terms and condition</label>
+        <ValidationMessage For="@(() => myModel.Term)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    List<string> Courses = new List<string>{
+        "BOOTCAMP DOTNET06",
+        "BOOTCAMP JAVA",
+        "AI OFFICE"
+    };
+    private CourseRegisVm myModel = new();
+
+    private void HandleValidSubmit()
+    {
+        // Xử lý submit ở đây
+        var agreed = myModel.Term ? "Yes" : "Error";
+
+        Console.WriteLine($@"
+            Full Name: {myModel.FullName}
+            Email: {myModel.Email}
+            Phone: {myModel.PhoneNum}
+            Course: {myModel.Course}
+            Mode: {myModel.StudyMode}
+            Preferred Start Date: {myModel.PrefStartDate.ToString("dd/MM/yyyy")}
+            Agreed to condition? {agreed}
+        ");
+
+    }
+}

@@ -1,0 +1,86 @@
+@page "/contact"
+@using System.ComponentModel.DataAnnotations
+
+<h1>Customer Contact Form</h1>
+
+<EditForm Model="myModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    @* <ValidationSummary /> *@
+
+    <div class="mb-3">
+        <label>Full Name</label><br />
+        <InputText @bind-Value="myModel.FullName" class="form-control" />
+        <ValidationMessage For="@(() => myModel.FullName)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label><br />
+        <InputText @bind-Value="myModel.Email" class="form-control" />
+        <ValidationMessage For="@(() => myModel.Email)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Address</label><br />
+        <InputText @bind-Value="myModel.Address" class="form-control" />
+        <ValidationMessage For="@(() => myModel.Address)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Phone</label><br />
+        <InputText @bind-Value="myModel.PhoneNum" class="form-control" />
+        <ValidationMessage For="@(() => myModel.PhoneNum)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Message</label><br />
+        <InputTextArea @bind-Value="myModel.Message" class="form-control" />
+        <ValidationMessage For="@(() => myModel.Message)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Service</label><br />
+        <InputSelect @bind-Value="myModel.Service" class="form-control">
+            <option value="">-- Select --</option>
+            @foreach (var s in Services)
+            {
+                <option value="@s">@s</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => myModel.Service)" />
+    </div>
+
+    <div class="mb-3">
+        <InputCheckbox @bind-Value="myModel.Term" />
+        <label class="form-check-label" for="term">I agree to terms and condition</label>
+        <ValidationMessage For="@(() => myModel.Term)" />
+    </div>
+
+    <br />
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    private CustomerContactVm myModel = new();
+    private bool submitted;
+    private List<string> Services = new() { "Service A", "Service B", "Service C" };
+    private void HandleValidSubmit()
+    {
+        // Xử lý submit ở đây
+        var agreed = myModel.Term ? "Yes" : "Error";
+
+        Console.WriteLine($@"
+        Full Name: {myModel.FullName}
+        Email: {myModel.Email}
+        Address: {myModel.Address}
+        Phone: {myModel.PhoneNum}
+        Message: {myModel.Message}
+        Service: {myModel.Service}
+        Agreed to condition? {agreed}
+        ");
+    }
+    private void HandleOnChange(bool isChecked)
+    {
+        myModel.Term = isChecked;
+    }
+}
