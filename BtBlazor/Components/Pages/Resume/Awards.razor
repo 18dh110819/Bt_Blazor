@@ -1,0 +1,23 @@
+<section class="container m-5 border-bottom resume-section" id="awards">
+    <div class="resume-content">
+        <h2 class="mb-5">Awards & Certifications</h2>
+        <ul class="list-unstyled">
+            @foreach (var award in awards)
+            {
+                <li><i class="fas fa-trophy text-warning"></i> @award</li>
+            }
+        </ul>
+    </div>
+</section>
+
+@code {
+    List<string> awards = new List<string>{
+        "Google Analytics Certified Developer",
+        "Mobile Web Specialist - Google Certification",
+        "1 st Place - University of Colorado Boulder - Emerging Tech Competition 2009",
+        "1 st Place - University of Colorado Boulder - Adobe Creative Jam 2008 (UI Design Category)",
+        "2 nd Place - University of Colorado Boulder - Emerging Tech Competition 2008",
+        "1 st Place - James Buchanan High School - Hackathon 2006",
+        "3 rd Place - James Buchanan High School - Hackathon 2005"
+    };
+}
