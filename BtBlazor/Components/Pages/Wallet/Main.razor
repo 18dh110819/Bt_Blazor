@@ -1,11 +1,13 @@
 @page "/wallet"
 
 <div class="bg-dark h-100">
-    <ModalTransaction item="@modalItem" hist="@history" oldItem="@wallet"/>
+    <div class="container">
+        <ModalTransaction item="@modalItem" hist="@history" oldItem="@wallet" />
 
-    <InteractionZone amount="@wallet.Amount" showModal="ShowModal" />
+        <InteractionZone amount="@wallet.Amount" showModal="ShowModal" />
 
-    <TransactionHist hist="@history" />
+        <TransactionHist hist="@history" />
+    </div>
 </div>
 
 @code {
