@@ -1,0 +1,71 @@
+<!-- Modal Body -->
+<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+<div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+     aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">
+                    @item.Type Money
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+            </div>
+            <EditForm Model="item" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+    
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="amount">Amount</label>
+                        <InputNumber id="amount" class="form-control" @bind-Value="item.Amount"  />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="closeModalBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary" onclick="closeModal()">Submit</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+<!-- Optional: Place to the bottom of scripts -->
+<script>
+    const myModal = new bootstrap.Modal(
+        document.getElementById("modalId"),
+        options,
+    );
+
+    function closeModal() {
+        document.getElementById("closeModalBtn").click();
+    }
+</script>
+
+@code {
+    [Parameter]
+    public WalletVm item { get; set; }
+    [Parameter]
+    public List<WalletVm> hist { get; set; }
+    [Parameter]
+    public WalletVm oldItem { get; set; }
+
+    private void HandleValidSubmit()
+    {
+        // Xử lý submit ở đây
+        if (item.Type == "Deposit")
+        {
+            oldItem.Amount += item.Amount;
+            item.TransactionDate = DateTime.Now;
+
+            hist.Add(item);
+        }
+        if (item.Type == "Withdraw" && item.Amount <= oldItem.Amount)
+        {
+            oldItem.Amount -= item.Amount;
+            item.TransactionDate = DateTime.Now;
+
+            hist.Add(item);
+        }
+    }
+}

@@ -1,0 +1,19 @@
+<div class="container d-flex flex-column justify-content-center align-items-center">
+    <h2 class="text-light">Transaction History</h2>
+    <table class="table table-bordered">
+        @foreach (var item in hist)
+        {
+            var bgColor = "background-color: " + (item.Type == "Deposit" ? "#d0e6dc" : "#f7d6d9");
+            <tr style="@bgColor">
+                <td>@item.Type</td>
+                <td>$@item.Amount</td>
+                <td>@item.TransactionDate</td>
+            </tr>
+        }
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public List<WalletVm> hist { get; set; }
+}

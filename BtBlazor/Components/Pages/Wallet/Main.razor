@@ -1,0 +1,22 @@
+@page "/wallet"
+
+<div class="bg-dark h-100">
+    <ModalTransaction item="@modalItem" hist="@history" oldItem="@wallet"/>
+
+    <InteractionZone amount="@wallet.Amount" showModal="ShowModal" />
+
+    <TransactionHist hist="@history" />
+</div>
+
+@code {
+    public WalletVm wallet { get; set; } = new WalletVm();
+
+    public List<WalletVm> history = new List<WalletVm>();
+
+    public WalletVm modalItem = new WalletVm();
+
+    public void ShowModal(WalletVm item)
+    {
+        modalItem = item;
+    }
+}
