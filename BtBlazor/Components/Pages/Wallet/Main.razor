@@ -2,7 +2,7 @@
 
 <div class="bg-dark h-100">
     <div class="container">
-        <ModalTransaction item="@modalItem" hist="@history" oldItem="@wallet" />
+        <ModalTransaction item="@modalItem" hist="@history" oldItem="@wallet" OnSubmit="OnModalSubmitted" />
 
         <InteractionZone amount="@wallet.Amount" showModal="ShowModal" />
 
@@ -20,5 +20,9 @@
     public void ShowModal(WalletVm item)
     {
         modalItem = item;
+    }
+
+    public void OnModalSubmitted(){
+        StateHasChanged();
     }
 }

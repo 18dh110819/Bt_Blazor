@@ -49,6 +49,7 @@
     public List<WalletVm> hist { get; set; }
     [Parameter]
     public WalletVm oldItem { get; set; }
+    [Parameter] public EventCallback OnSubmit { get; set; }
 
     private void HandleValidSubmit()
     {
@@ -67,5 +68,7 @@
 
             hist.Add(item);
         }
+        
+        OnSubmit.InvokeAsync();
     }
 }
