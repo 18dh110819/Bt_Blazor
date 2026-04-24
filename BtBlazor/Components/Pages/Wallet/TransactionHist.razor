@@ -1,8 +1,11 @@
+@inject WalletService _walletService
+@implements IDisposable
+
 <div class="pb-5 d-flex flex-column justify-content-center align-items-center">
     <h2 class="text-light">Transaction History</h2>
     <div class="border rounded-3 overflow-hidden w-100">
         <table class="table table-bordered mb-0">
-            @foreach (var item in hist)
+            @foreach (var item in _walletService.hist)
             {
                 var bgColor = "background-color: " + (item.Type == "Deposit" ? "#d0e6dc" : "#f7d6d9");
                 <tr style="@bgColor">
@@ -17,6 +20,19 @@
 </div>
 
 @code {
-    [Parameter]
-    public List<WalletVm> hist { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        // Gọi API ở đây nếu cần
+        // var data = await Http.GetFromJsonAsync<T>("/api/endpoint");
+
+        // Nếu có dùng state service:
+        _walletService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        // Cleanup nếu cần
+        _walletService.OnChange -= StateHasChanged;
+    }
+
 }

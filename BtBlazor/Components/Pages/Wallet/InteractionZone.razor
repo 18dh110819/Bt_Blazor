@@ -1,41 +1,34 @@
+@inject WalletService _walletService
+@implements IDisposable
+
 <div class="py-5">
     <div class="d-flex flex-column justify-content-center align-items-center">
         <h1 class="text-light">My wallet</h1>
-        <p style="color: yellow; font-size: 24px">$@amount</p>
+        <p style="color: yellow; font-size: 24px">$@_walletService.modalItem.Amount</p>
         <p class="text-light">Total balance</p>
         <div class="btn-group">
             <button type="button" class="btn btn-primary me-5 rounded-cirle" data-bs-toggle="modal" data-bs-target="#modalId"
-                    @onclick='() => ShowDetailChild("Deposit")'>Deposit</button>
+                    @onclick='async () => await _walletService.ShowModal(_walletService.modalItem, "Deposit")'>Deposit</button>
             <button type="button" class="btn btn-danger rounded-cirle" data-bs-toggle="modal" data-bs-target="#modalId"
-                    @onclick='() => ShowDetailChild("Withdraw")'>Withdraw</button>
+                    @onclick='async () => await _walletService.ShowModal(_walletService.modalItem, "Withdraw")'>Withdraw</button>
         </div>
     </div>
 </div>
 
 @code {
-    [Parameter]
-    public decimal amount { get; set; }
-    [Parameter]
-    public EventCallback<WalletVm> showModal { get; set; }
-
-    public void ShowDetailChild(string type)
-    {
-        var newItem = new WalletVm();
-        newItem.Type = type;
-        showModal.InvokeAsync(newItem);
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        //Khi trang vừa load xong thì gọi api để lấy dữ liệu từ server map vào prodDetail
+        // Gọi API ở đây nếu cần
+        // var data = await Http.GetFromJsonAsync<T>("/api/endpoint");
+
+        // Nếu có dùng state service:
+        _walletService.OnChange += StateHasChanged;
     }
 
- 
-
-    protected override async Task OnParametersSetAsync()
+    public void Dispose()
     {
-        //Kích hoạt khi các thuộc tính [Parameter thay đổi]
-        
+        // Cleanup nếu cần
+        _walletService.OnChange -= StateHasChanged;
     }
 
 }

@@ -1,28 +1,30 @@
 @page "/wallet"
+@inject WalletService _walletService
+@implements IDisposable
 
 <div class="bg-dark h-100">
     <div class="container">
-        <ModalTransaction item="@modalItem" hist="@history" oldItem="@wallet" OnSubmit="OnModalSubmitted" />
+        <ModalTransaction />
 
-        <InteractionZone amount="@wallet.Amount" showModal="ShowModal" />
+        <InteractionZone />
 
-        <TransactionHist hist="@history" />
+        <TransactionHist />
     </div>
 </div>
 
 @code {
-    public WalletVm wallet { get; set; } = new WalletVm();
-
-    public List<WalletVm> history = new List<WalletVm>();
-
-    public WalletVm modalItem = new WalletVm();
-
-    public void ShowModal(WalletVm item)
+    protected override async Task OnInitializedAsync()
     {
-        modalItem = item;
+        // Gọi API ở đây nếu cần
+        // var data = await Http.GetFromJsonAsync<T>("/api/endpoint");
+
+        // Nếu có dùng state service:
+        _walletService.OnChange += StateHasChanged;
     }
 
-    public void OnModalSubmitted(){
-        StateHasChanged();
+    public void Dispose()
+    {
+        // Cleanup nếu cần
+        _walletService.OnChange -= StateHasChanged;
     }
 }

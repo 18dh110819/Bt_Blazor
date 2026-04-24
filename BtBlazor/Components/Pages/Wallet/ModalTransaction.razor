@@ -1,3 +1,10 @@
+@inject WalletService _walletService
+@implements IDisposable
+
+@{
+    var item = _walletService.modalItem;
+}
+
 <!-- Modal Body -->
 <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
 <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
@@ -16,7 +23,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="amount">Amount</label>
-                        <InputNumber id="amount" class="form-control" @bind-Value="item.Amount"  />
+                        <InputNumber id="amount" class="form-control" @bind-Value="Amount" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -43,32 +50,40 @@
 </script>
 
 @code {
-    [Parameter]
-    public WalletVm item { get; set; }
-    [Parameter]
-    public List<WalletVm> hist { get; set; }
-    [Parameter]
-    public WalletVm oldItem { get; set; }
-    [Parameter] public EventCallback OnSubmit { get; set; }
+    decimal Amount { get; set; } = 0.0m;
 
-    private void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
+        var item = _walletService.modalItem;
+
         // Xử lý submit ở đây
         if (item.Type == "Deposit")
         {
-            oldItem.Amount += item.Amount;
-            item.TransactionDate = DateTime.Now;
-
-            hist.Add(item);
+            await _walletService.AdjustAmount(item, Amount);
+            await _walletService.AddToHist(item);
         }
-        if (item.Type == "Withdraw" && item.Amount <= oldItem.Amount)
+        if (item.Type == "Withdraw" && Amount <= item.Amount)
         {
-            oldItem.Amount -= item.Amount;
-            item.TransactionDate = DateTime.Now;
-
-            hist.Add(item);
+            await _walletService.AdjustAmount(item, -Amount);
+            await _walletService.AddToHist(item);
         }
-        
-        OnSubmit.InvokeAsync();
+
+        Amount = 0.0m;
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Gọi API ở đây nếu cần
+        // var data = await Http.GetFromJsonAsync<T>("/api/endpoint");
+
+        // Nếu có dùng state service:
+        _walletService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        // Cleanup nếu cần
+        _walletService.OnChange -= StateHasChanged;
+    }
+
 }
